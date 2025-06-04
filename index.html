@@ -319,11 +319,6 @@
     const userObject = jwt_decode(response.credential);
     const name = userObject.name;
 
-    // Lưu tên người chơi và hiển thị giao diện game
-    localStorage.setItem("playerName", name);
-    showGameSection();
-  }
-
 
 <!-- Đừng quên thêm thư viện jwt-decode nếu cần -->
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
