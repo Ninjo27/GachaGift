@@ -1,158 +1,166 @@
-
+<!-- Để tránh vượt giới hạn ký tự, tôi sẽ gửi thành từng phần. Dưới đây là PHẦN 1 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>GachaGift - Mở Quà Kiếm Tiền</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xem Quảng Cáo & Mở Quà Thưởng</title>
   <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
+    /* --- giữ nguyên toàn bộ style như file gốc --- */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
       text-align: center;
+      background-color: #f4f4f4;
+      padding: 50px;
+      position: relative;
     }
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 1em 0;
-    }
-    main {
-      padding: 2em;
-    }
-    .card {
-      background: white;
-      max-width: 500px;
-      margin: auto;
-      padding: 2em;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    .hidden {
-      display: none;
-    }
-    input, select, button {
-      margin: 10px 0;
-      padding: 0.7em;
-      width: 100%;
-      border-radius: 5px;
+    input, button {
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      font-size: 1em;
+      margin-top: 10px;
     }
     button {
-      background: #4CAF50;
+      background-color: #28a745;
       color: white;
       border: none;
       cursor: pointer;
     }
-    #balance {
-      font-size: 1.2em;
-      color: #333;
+    button:disabled {
+      background-color: gray;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #0033cc;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🎁 GachaGift - Xem Quảng Cáo và Mở Quà Kiếm Tiền 🎁</h1>
-  </header>
-  <main>
-    <div id="loginCard" class="card">
-      <div id="g_id_onload"
-           data-client_id="543690730276-tl87slnraebjhtvrmcumia1e3qj39kd4.apps.googleusercontent.com"
-           data-callback="handleLogin"
-           data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin" data-type="standard"></div>
+  <h1>🎁 Xem Quảng Cáo và Mở Quà Thưởng 🎁</h1>
+
+  <!-- Nút Đăng nhập Google -->
+  <div id="googleLogin" style="margin-bottom: 20px;">
+    <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+         data-callback="handleGoogleLogin"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+  </div>
+
+  <!-- Khu vực nhập tên -->
+  <div id="inputArea" style="display:none;">
+    <input type="text" id="playerName" placeholder="Tên Minecraft của bạn">
+    <br>
+    <button onclick="saveName()">Xác nhận Tên</button>
+  </div>
+
+  <!-- Giao diện chính -->
+  <div id="gameArea" style="display:none; position: relative;">
+    <p><strong>Tên của bạn:</strong> <span id="displayName"></span></p>
+    <div id="levelSelection">
+      <p>Chọn Mức Độ:</p>
+      <label><input type="radio" name="level" value="thuong"> Thường (20%)</label><br>
+      <label><input type="radio" name="level" value="hien"> Hiếm (10%)</label><br>
+      <label><input type="radio" name="level" value="sieuhien"> Siêu hiếm (5%)</label><br>
+      <button onclick="confirmLevel()">Xác nhận Mức độ</button>
     </div>
 
-    <div id="roleCard" class="card hidden">
-      <p>Chào <span id="userName"></span>!</p>
-      <p>Bạn muốn làm gì?</p>
-      <button onclick="setRole('viewer')">👀 Xem quảng cáo & nhận quà</button>
-      <button onclick="setRole('publisher')">💰 Kiếm tiền từ lượt mở quà</button>
+    <button id="adButton" onclick="watchAd()" style="display:none;">Xem Quảng Cáo</button>
+    <button id="spinButton" onclick="spinSlot()" style="display:none;">Bấm Để Mở Quà</button>
+
+    <div id="giftBox" style="width:200px;height:200px;margin:20px auto;display:none;">
+      <div class="lid" style="height:40%;background:orange;"></div>
+      <div class="box" style="height:60%;background:yellow;"></div>
     </div>
 
-    <div id="dashboard" class="card hidden">
-      <p><strong>Tài khoản:</strong> <span id="userEmail"></span></p>
-      <p><strong>Vai trò:</strong> <span id="userRole"></span></p>
-      <div id="viewerPanel" class="hidden">
-        <button onclick="watchAd()">🎬 Xem quảng cáo & Mở quà</button>
-        <p id="viewerStatus"></p>
-      </div>
-      <div id="publisherPanel" class="hidden">
-        <p id="balance">Số dư: <span id="coin">0</span> đồng</p>
-        <h3>Thông tin chuyển khoản</h3>
-        <input type="text" placeholder="Tên chủ tài khoản" id="bankName">
-        <input type="text" placeholder="Số tài khoản / Số ví" id="bankNumber">
-        <select id="bankMethod">
-          <option value="momo">Ví Momo</option>
-          <option value="zalo">ZaloPay</option>
-          <option value="bank">Chuyển khoản ngân hàng</option>
-        </select>
-        <button onclick="verifyBank()">✅ Xác minh thông tin</button>
-        <p id="verifyStatus"></p>
-      </div>
+    <div id="resultIcon"></div>
+    <div id="status"></div>
+    <div id="coinInfo" style="display:none;">
+      <p><strong>Số dư hiện tại:</strong> <span id="coinBalance">0</span> đồng</p>
     </div>
-  </main>
+  </div>
 
-  <script>
-    let user = {
-      name: "",
-      email: "",
-      role: "",
-      coin: 0
-    };
+<script>
+let selectedProbability = 0;
+let selectedLevelName = "";
+let userData = null;
 
-    function handleLogin(response) {
-      const payload = parseJwt(response.credential);
-      user.name = payload.name;
-      user.email = payload.email;
-      document.getElementById("userName").textContent = user.name;
-      document.getElementById("userEmail").textContent = user.email;
-      document.getElementById("loginCard").classList.add("hidden");
-      document.getElementById("roleCard").classList.remove("hidden");
+function handleGoogleLogin(response) {
+  const data = parseJwt(response.credential);
+  userData = {
+    name: data.name,
+    email: data.email,
+    coin: parseInt(localStorage.getItem("userCoin") || "0"),
+    role: localStorage.getItem("userRole") || ""
+  };
+  document.getElementById("googleLogin").style.display = "none";
+  if (!userData.role) {
+    const role = prompt("Bạn là viewer (xem quảng cáo) hay publisher (kiếm tiền)?", "viewer");
+    userData.role = role;
+    localStorage.setItem("userRole", role);
+  }
+  localStorage.setItem("userEmail", userData.email);
+  localStorage.setItem("userCoin", userData.coin);
+  if (userData.role === "publisher") {
+    document.getElementById("coinInfo").style.display = "block";
+    document.getElementById("coinBalance").innerText = userData.coin;
+  }
+  document.getElementById("inputArea").style.display = "block";
+}
+
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+}
+
+function saveName() {
+  const name = document.getElementById("playerName").value.trim();
+  if (!name) return alert("Nhập tên Minecraft");
+  localStorage.setItem("playerName", name);
+  showGameSection();
+}
+
+function showGameSection() {
+  document.getElementById("inputArea").style.display = "none";
+  document.getElementById("gameArea").style.display = "block";
+  document.getElementById("displayName").innerText = localStorage.getItem("playerName");
+}
+
+function confirmLevel() {
+  const radios = document.getElementsByName("level");
+  let levelChosen = null;
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      levelChosen = radios[i].value;
+      break;
     }
+  }
+  if (!levelChosen) return alert("Chọn mức độ!");
+  if (levelChosen === "thuong") selectedProbability = 0.20;
+  if (levelChosen === "hien") selectedProbability = 0.10;
+  if (levelChosen === "sieuhien") selectedProbability = 0.05;
+  selectedLevelName = levelChosen;
+  document.getElementById("levelSelection").style.display = "none";
+  document.getElementById("adButton").style.display = "inline-block";
+}
 
-    function setRole(role) {
-      user.role = role;
-      document.getElementById("userRole").textContent = role === 'viewer' ? "Người xem quảng cáo" : "Người kiếm tiền";
-      document.getElementById("roleCard").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById(role + "Panel").classList.remove("hidden");
-    }
+function watchAd() {
+  document.getElementById("status").innerText = "Đang xem quảng cáo...";
+  document.getElementById("adButton").disabled = true;
+  setTimeout(() => {
+    document.getElementById("status").innerText = "";
+    document.getElementById("adButton").style.display = "none";
+    document.getElementById("spinButton").style.display = "inline-block";
+  }, 5000);
+}
 
-    function watchAd() {
-      document.getElementById("viewerStatus").textContent = "⏳ Đang xem quảng cáo...";
-      setTimeout(() => {
-        document.getElementById("viewerStatus").textContent = "✅ Quảng cáo đã xem. Hộp quà đã mở!";
-        // Cộng 5 đồng cho publisher giả định
-        user.coin += 5;
-        document.getElementById("coin").textContent = user.coin;
-      }, 5000);
-    }
-
-    function verifyBank() {
-      const name = document.getElementById("bankName").value.trim();
-      const number = document.getElementById("bankNumber").value.trim();
-      const method = document.getElementById("bankMethod").value;
-      if (!name || !number) {
-        document.getElementById("verifyStatus").textContent = "❗ Vui lòng nhập đầy đủ thông tin";
-        return;
-      }
-      document.getElementById("verifyStatus").textContent = `✅ Đã lưu thông tin: ${method.toUpperCase()} - ${number}`;
-    }
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    }
-  </script>
-</body>
-</html>
+function spinSlot() {
+  const win = Ma
