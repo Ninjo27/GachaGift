@@ -311,7 +311,23 @@
   <script>
     let selectedProbability = 0;
     let selectedLevelName = "";
-    
+
+  function handleGoogleLogin(response) {
+    console.log("Đăng nhập thành công:", response);
+
+    // Lấy thông tin người dùng từ Google JWT
+    const userObject = jwt_decode(response.credential);
+    const name = userObject.name;
+
+    // Lưu tên người chơi và hiển thị giao diện game
+    localStorage.setItem("playerName", name);
+    showGameSection();
+  }
+
+
+<!-- Đừng quên thêm thư viện jwt-decode nếu cần -->
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
     function saveName() {
       const name = document.getElementById("playerName").value.trim();
       if (!name) {
