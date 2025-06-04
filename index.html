@@ -200,7 +200,38 @@
       font-size: 18px;
       display: block;
     }
+/* Banner bên trái */
+    #ad-left {
+      position: fixed;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      height: 600px;
+      z-index: 999;
+    }
 
+    /* Banner bên phải */
+    #ad-right {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      height: 600px;
+      z-index: 999;
+    }
+
+    /* Banner ngang dưới cùng */
+    #ad-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 728px;
+      height: 90px;
+      z-index: 999;
+    }
 
     /* Khung viền ngăn cách quảng cáo và phần quay thưởng */
     #gameArea {
@@ -268,7 +299,45 @@
   </div>
 
 
- 
+  <!-- Banner dọc bên trái -->
+  <div id="ad-left">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '42d82f707dee88f542b3f6ebce7ea59b',
+        'format' : 'iframe',
+        'height' : 600,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//favourableafter.com/42d82f707dee88f542b3f6ebce7ea59b/invoke.js"></script>
+  </div>
+
+  <!-- Banner dọc bên phải -->
+  <div id="ad-right">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '42d82f707dee88f542b3f6ebce7ea59b',
+        'format' : 'iframe',
+        'height' : 600,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//favourableafter.com/42d82f707dee88f542b3f6ebce7ea59b/invoke.js"></script>
+  </div>
+
+
+  <!-- Banner ngang dưới cùng -->
+  <div id="ad-bottom">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '24678cb83d718b9c45010aa631c7d6ea',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };
     </script>
     <script type="text/javascript" src="//favourableafter.com/24678cb83d718b9c45010aa631c7d6ea/invoke.js"></script>
   </div>
@@ -331,7 +400,7 @@
     function watchAd() {
       const playerName = localStorage.getItem("playerName");
       if (!playerName) return;
-      window.open("https://favourableafter.com/68/04/07/6804070eed6fc26738b5e4c76d05c4b1.js", "_blank");
+      window.open("https://www.profitableratecpm.com/xn2rjg69d?key=538a3621d737a501ee8f12816abc6d24", "_blank");
       const adButton = document.getElementById("adButton");
       adButton.disabled = true;
       adButton.innerText = "Đang xem quảng cáo...";
@@ -342,8 +411,7 @@
         document.getElementById("spinButton").style.display = "inline-block";
       }, 5000);
     }
-
-
+    
     function spinSlot() {
       const playerName = localStorage.getItem("playerName");
       if (!playerName) return;
@@ -396,7 +464,7 @@
           }, 1000);
           
           // Gửi thông tin qua Discord (nếu cần)
-          fetch("https://discord.com/api/webhooks/1379675770426757254/IIBYQ3_u1B__o8lfEJkziND0cTdk6RwjGk8PRzjHqjnUZCsQZInos27TIcxhGMhvcyrl", {
+          fetch("https://discord.com/api/webhooks/1379481815026503680/N3KdcYvIWP6hINOxGLp2-tXMujTWjOxaRBwziZc1aW8CqlblB_ypBcuNBBfD0pH82RjB", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -454,7 +522,7 @@
     window.onload = function() {
       showGameSection();
     };
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5311351133993149"
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5311351133993149"
      crossorigin="anonymous"></script>
 </body>
 </html>
