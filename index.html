@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Xem Quảng Cáo & Mở Quà Thưởng</title>
-  <meta name="google-signin-client_id" content="543690730276-tl87slnraebjhtvrmcumia1e3qj39kd4.apps.googleusercontent.com">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <title>Xem Quảng Cáo & Mở Quà Thưởng</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -250,12 +247,6 @@
 </head>
 <body>
   <h1>🎁 Xem Quảng Cáo và Mở Quà Thưởng 🎁</h1>
-  <div id="g_id_onload"
-     data-client_id="543690730276-tl87slnraebjhtvrmcumia1e3qj39kd4.apps.googleusercontent.com"
-     data-callback="handleGoogleLogin"
-     data-auto_prompt="false">
-</div>
-<div class="g_id_signin" data-type="standard"></div>
   <!-- Khu vực nhập tên -->
   <div id="inputArea">
     <input type="text" id="playerName" placeholder="Tên Minecraft của bạn">
@@ -307,22 +298,12 @@
     <div id="effectContainer"></div>
   </div>
 
+
   
   <script>
     let selectedProbability = 0;
     let selectedLevelName = "";
-
-  function handleGoogleLogin(response) {
-    console.log("Đăng nhập thành công:", response);
-
-    // Lấy thông tin người dùng từ Google JWT
-    const userObject = jwt_decode(response.credential);
-    const name = userObject.name;
-
-
-<!-- Đừng quên thêm thư viện jwt-decode nếu cần -->
-<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-
+    
     function saveName() {
       const name = document.getElementById("playerName").value.trim();
       if (!name) {
@@ -341,38 +322,7 @@
         document.getElementById("displayName").innerText = name;
       }
     }
-    function handleGoogleLogin(response) {
-  const data = parseJwt(response.credential);
-  userData = {
-    name: data.name,
-    email: data.email,
-    coin: parseInt(localStorage.getItem("userCoin") || "0"),
-    role: localStorage.getItem("userRole") || ""
-  };
-  document.getElementById("googleLogin").style.display = "none";
-  if (!userData.role) {
-    const role = prompt("Bạn là viewer (xem quảng cáo) hay publisher (kiếm tiền)?", "viewer");
-    userData.role = role;
-    localStorage.setItem("userRole", role);
-  }
-  localStorage.setItem("userEmail", userData.email);
-  localStorage.setItem("userCoin", userData.coin);
-  if (userData.role === "publisher") {
-    document.getElementById("coinInfo").style.display = "block";
-    document.getElementById("coinBalance").innerText = userData.coin;
-  }
-  document.getElementById("inputArea").style.display = "block";
-}
-
-function parseJwt(token) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-  return JSON.parse(jsonPayload);
-}
-
+    
     function confirmLevel() {
       const radios = document.getElementsByName("level");
       let levelChosen = null;
