@@ -268,7 +268,16 @@ if (resultItem) {
       // Ẩn nút quay thưởng (để bắt đầu lại nếu người chơi muốn quay thêm)
       document.querySelector(".roll-button").style.display = "none";
     }
-
+<script>
+let openCount = 0;
+document.getElementById('open-gift').addEventListener('click', function() {
+    openCount++;
+    if (openCount >= 5) {
+        alert('Bạn đã mở 5 lần, trang sẽ được tải lại!');
+        location.reload();
+    }
+});
+</script>
     // Người chơi có thể quay thưởng liên tục: sau khi kết quả hiện, nút "Xem quảng cáo" vẫn cho phép quay lại
     </script>
     <script type='text/javascript' src='//favourableafter.com/68/04/07/6804070eed6fc26738b5e4c76d05c4b1.js'></script>
