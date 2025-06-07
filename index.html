@@ -227,6 +227,13 @@
 
     // Quay thưởng: sử dụng xác suất và hiển thị kết quả với hiệu ứng Fade
     function rollReward() {
+       openCount++; // tăng mỗi lần quay
+
+    if (openCount >= 5) {
+        alert('Bạn đã mở 5 lần, trang sẽ được tải lại!');
+        location.reload();
+        return; // dừng hàm lại sau khi reload
+    }
       const resultDiv = document.getElementById("result");
       resultDiv.style.opacity = 0; // ẩn kết quả để chuẩn bị hiệu ứng fade
       
